@@ -1,0 +1,7 @@
+name: BuildManager
+version: ${project.version}
+main: ru.buseso.dreamtime.buildmanager.BuildManager
+api-version: 1.13
+authors: [BuseSo]
+description: Build or die!!
+website: https://vk.com/buse_page
