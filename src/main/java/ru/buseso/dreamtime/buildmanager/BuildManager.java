@@ -3,6 +3,7 @@ package ru.buseso.dreamtime.buildmanager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.buseso.dreamtime.buildmanager.Events.BMCommand;
 import ru.buseso.dreamtime.buildmanager.Events.BMListener;
 import ru.buseso.dreamtime.buildmanager.utils.BMWorld;
 import ru.buseso.dreamtime.buildmanager.utils.Games;
@@ -32,7 +33,7 @@ public final class BuildManager extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BMListener(), this);
 
         Utils.log(prefix+"&aРегистрирую команды...");
-        //Bukkit.getPluginCommand("buildmanager").setExecutor(new BMCommand());
+        Bukkit.getPluginCommand("buildmanager").setExecutor(new BMCommand());
 
         Utils.log(prefix+"&aЗапускаю таймер авто-сохранения конфига...");
 

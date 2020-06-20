@@ -29,6 +29,7 @@ public class BMListener implements Listener {
         for(BMWorld w : BuildManager.worlds) {
             if(w.getId().equals(world.getName())) {
                 bmw = w;
+                break;
             }
         }
 
@@ -65,6 +66,7 @@ public class BMListener implements Listener {
         for(BMWorld w : BuildManager.worlds) {
             if(w.getId().equals(world.getName())) {
                 bmw = w;
+                break;
             }
         }
 

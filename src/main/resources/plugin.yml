@@ -5,3 +5,7 @@ api-version: 1.13
 authors: [BuseSo]
 description: Build or die!!
 website: https://vk.com/buse_page
+
+commands:
+  buildmanager:
+    description: BUILD OR BE BUILDED BY CUPRUM AND FERRUM!!!!!!!
