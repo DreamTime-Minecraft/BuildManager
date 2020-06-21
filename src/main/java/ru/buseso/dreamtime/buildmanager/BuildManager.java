@@ -7,6 +7,8 @@ import ru.buseso.dreamtime.buildmanager.Events.BMCommand;
 import ru.buseso.dreamtime.buildmanager.Events.BMListener;
 import ru.buseso.dreamtime.buildmanager.utils.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +30,9 @@ public final class BuildManager extends JavaPlugin {
 
         Utils.log(prefix+"&aПровожу работы с конфигом...");
         saveDefaultConfig();
-        addAllFromConfig();
+
+        Utils.log(prefix+"&aОжидаю загрузку миров для дополнительной настройки...");
+        Bukkit.getScheduler().runTaskLater(this, () -> addAllFromConfig(), 60);
 
         Utils.log(prefix+"&aРегистрирую слушатели...");
         Bukkit.getPluginManager().registerEvents(new BMListener(), this);
@@ -38,7 +42,7 @@ public final class BuildManager extends JavaPlugin {
 
         Utils.log(prefix+"&aЗапускаю таймер авто-сохранения конфига...");
         run = new BMRun();
-        run.runTaskTimer(this, 20, 6000);
+        run.runTaskTimerAsynchronously(this, 20, 6000);
 
         Utils.log(prefix+"&aПлагин &eBuild&cManager &bv"+this.getDescription().getVersion()+" " +
                 "&aуспешно загружен за &b"+ (System.currentTimeMillis()-start) +"&aмс");
@@ -47,7 +51,24 @@ public final class BuildManager extends JavaPlugin {
     @Override
     public void onDisable() {
         run.cancel();
-        saveConfig();
+
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            for(BMWorld bmw : BuildManager.worlds) {
+                getConfig().set("worlds."+bmw.getId()+".owner",bmw.getOwner());
+                getConfig().set("worlds."+bmw.getId()+".builders",bmw.getBuilders());
+                getConfig().set("worlds."+bmw.getId()+".progress",bmw.getProgress().toString());
+                getConfig().set("worlds."+bmw.getId()+".name",bmw.getName());
+                getConfig().set("worlds."+bmw.getId()+".description",bmw.getDescription());
+                getConfig().set("worlds."+bmw.getId()+".game",bmw.getGame().toString());
+                getConfig().set("worlds."+bmw.getId()+".private",bmw.isPrivat());
+            }
+        });
+
+        try {
+            getConfig().save(new File(getDataFolder()+File.separator+"config.yml"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addAllFromConfig() {
@@ -57,6 +78,7 @@ public final class BuildManager extends JavaPlugin {
         for(String s : sections) {
             if(Bukkit.getWorld(s) == null) {
                 Utils.log(prefix+"&4Мир '"+s+"' не найден! Пропускаю его загрузку!");
+                continue;
             }
 
             String owner = cfg.getString("worlds."+s+".owner");
