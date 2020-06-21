@@ -1,11 +1,13 @@
 package ru.buseso.dreamtime.buildmanager.Events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
@@ -57,7 +59,7 @@ public class BMListener implements Listener {
         p.setGlowing(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void playerChangeGm(PlayerGameModeChangeEvent e) {
         Player p = e.getPlayer();
         World world = p.getWorld();
@@ -79,6 +81,24 @@ public class BMListener implements Listener {
         Progress prog = bmw.getProgress();
         if(prog.equals(Progress.FINISHED) || prog.equals(Progress.FROZEN)) {
             if(!p.hasPermission("buildmanager.admin")) {
+                p.setGameMode(GameMode.SPECTATOR);
+            }
+        }
+    }
+
+    @EventHandler
+    public void inventoryClick(InventoryClickEvent e) {
+        Player p = (Player)e.getWhoClicked();
+        int slot = e.getSlot();
+
+        if(e.getView().getItem(slot) != null) {
+            BMWorld bmw = BuildManager.worlds.get(slot);
+            BMCommand.sendInfo(p, bmw);
+            World world = Bukkit.getWorld(bmw.getId());
+            p.teleport(world.getSpawnLocation());
+            if(bmw.getProgress().equals(Progress.FINISHED) || bmw.getProgress().equals(Progress.FROZEN)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 9999, 2));
+                p.setGlowing(true);
                 p.setGameMode(GameMode.SPECTATOR);
             }
         }

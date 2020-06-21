@@ -7,10 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.buseso.dreamtime.buildmanager.BuildManager;
-import ru.buseso.dreamtime.buildmanager.utils.BMWorld;
-import ru.buseso.dreamtime.buildmanager.utils.Games;
-import ru.buseso.dreamtime.buildmanager.utils.Progress;
-import ru.buseso.dreamtime.buildmanager.utils.Utils;
+import ru.buseso.dreamtime.buildmanager.utils.*;
 
 import java.util.Arrays;
 
@@ -25,24 +22,26 @@ public class BMCommand implements CommandExecutor {
         if(args.length == 0) {
             help = true;
         } else if(args.length == 1) {
-            if(args[0].equalsIgnoreCase("info")) {
+            if (args[0].equalsIgnoreCase("info")) {
                 String world = p.getWorld().getName();
 
                 BMWorld bmw = null;
-                for(BMWorld w : BuildManager.worlds) {
-                    if(w.getId().equals(world)) {
+                for (BMWorld w : BuildManager.worlds) {
+                    if (w.getId().equals(world)) {
                         bmw = w;
                         break;
                     }
                 }
 
-                if(bmw == null) {
-                    p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Мир не занесён в конфиг менеджера! " +
+                if (bmw == null) {
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix + "&4Мир не занесён в конфиг менеджера! " +
                             "Сообщите об этой ошибке &cАдминистрации &9Dream&bTime&4'а!"));
                     return false;
                 }
 
                 sendInfo(p, bmw);
+            } else if(args[0].equalsIgnoreCase("gui")) {
+                p.openInventory(BMInv.createMainMenu());
             } else {
                 help = true;
             }
@@ -65,7 +64,7 @@ public class BMCommand implements CommandExecutor {
                     return false;
                 }
 
-                if(!p.getName().equals(bmw.getOwner())) {
+                if(!p.getName().equals(bmw.getOwner()) || !p.hasPermission("buildmanager.admin")) {
                     p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Вы не являетесь владельцем данного мира!"));
                     return false;
                 }
@@ -134,10 +133,19 @@ public class BMCommand implements CommandExecutor {
                         return false;
                     }
 
+                    if(!p.getName().equals(bmw.getOwner()) || !p.hasPermission("buildmanager.admin")) {
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Вы не являетесь владельцем данного мира!"));
+                        return false;
+                    }
+
                     if(args[2].equalsIgnoreCase("add")) {
-
+                        String name = args[3];
+                        bmw.addBuilder(name);
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aИгрок &b"+name+" &aдобавлен в строителей в этот мир!"));
                     } else if(args[2].equalsIgnoreCase("remove")) {
-
+                        String name = args[3];
+                        bmw.removeBuilder(name);
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aИгрок &b"+name+" &aдобавлен в строителей в этот мир!"));
                     } else {
                         help = true;
                     }
@@ -159,6 +167,7 @@ public class BMCommand implements CommandExecutor {
     private void sendHelp(Player p) {
         p.sendMessage(Utils.fixColor("&7Все команды менеджера:"));
         p.sendMessage(Utils.fixColor("&a> &7/bm info - Информация о текущем мире"));
+        p.sendMessage(Utils.fixColor("&a> &7/bm gui - Меню со всеми мирами и информация о них"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build builder add <ник> - добавить игрока в строителей в мире (String)"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build builder remove <ник> - убрать игрока из строителей в мире (String)"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build progress <прогресс> - установить прогресс в мире (Progress)"));
@@ -169,7 +178,7 @@ public class BMCommand implements CommandExecutor {
         p.sendMessage(Utils.fixColor("&a> &7/bm build progress <стадия> - установить прогресс для мира (Progress)"));
     }
 
-    private void sendInfo(Player p, BMWorld world) {
+    public static void sendInfo(Player p, BMWorld world) {
         p.sendMessage(Utils.fixColor("&a> &7ID мира: &a"+world.getId()));
         p.sendMessage(Utils.fixColor("&a> &7Владелец: &a"+world.getOwner()));
         p.sendMessage(Utils.fixColor("&a> &7Строители: &a"+world.getBuilders().toString()));
