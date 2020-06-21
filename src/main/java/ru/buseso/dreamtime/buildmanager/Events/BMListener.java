@@ -43,14 +43,16 @@ public class BMListener implements Listener {
 
         Progress prog = bmw.getProgress();
         if(prog.equals(Progress.NOTSTARTED) || prog.equals(Progress.INPROGRESS)) {
-            if(!bmw.getBuilders().contains(p.getName())) {
-                p.sendMessage(Utils.fixColor(BuildManager.prefix + "&4Вы не являетесь строителем в данном мире!"));
-                e.setCancelled(true);
-                return;
-            } else {
-                p.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                p.setGlowing(false);
-                p.setGameMode(GameMode.CREATIVE);
+            if(bmw.isPrivat()) {
+                if (!bmw.getBuilders().contains(p.getName())) {
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix + "&4Вы не являетесь строителем в данном мире!"));
+                    e.setCancelled(true);
+                    return;
+                } else {
+                    p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                    p.setGlowing(false);
+                    p.setGameMode(GameMode.CREATIVE);
+                }
             }
         }
 

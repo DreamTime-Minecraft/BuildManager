@@ -17,7 +17,7 @@ public class BMInv {
     public static Inventory createMainMenu() {
         Inventory inv = Bukkit.createInventory(new BMMainHolder(), 54, Utils.fixColor("&eB&cM&8>> &6Главное меню"));
         for(int i = 0; i < 53 && i < BuildManager.worlds.size(); i++) {
-            ItemStack item = new ItemStack(Material.MAP, i);
+            ItemStack item = new ItemStack(Material.WOOD, i);
             ItemMeta meta = item.getItemMeta();
             BMWorld bmw = BuildManager.worlds.get(i);
             meta.setDisplayName(Utils.fixColor("&8["+bmw.getId()+"&8] &a"+bmw.getName()));

@@ -89,7 +89,7 @@ public class BMCommand implements CommandExecutor {
                     try {
                         games = Games.valueOf(game);
                     }catch (IllegalArgumentException e) {
-                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные цели постройки: "+Games.values()));
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные цели постройки: "+Games.values().toString()));
                         return false;
                     }
 
@@ -101,7 +101,7 @@ public class BMCommand implements CommandExecutor {
                     try {
                         prog = Progress.valueOf(progress);
                     }catch (IllegalArgumentException e) {
-                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные прогрессы постройки: "+Progress.values()));
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные прогрессы постройки: "+Progress.values().toString()));
                         return false;
                     }
 
@@ -145,7 +145,7 @@ public class BMCommand implements CommandExecutor {
                     } else if(args[2].equalsIgnoreCase("remove")) {
                         String name = args[3];
                         bmw.removeBuilder(name);
-                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aИгрок &b"+name+" &aдобавлен в строителей в этот мир!"));
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aИгрок &b"+name+" &aубран из строителей в этот мир!"));
                     } else {
                         help = true;
                     }
@@ -175,7 +175,6 @@ public class BMCommand implements CommandExecutor {
         p.sendMessage(Utils.fixColor("&a> &7/bm build desc <описание> - установить описание для мира. _ ставит пробел (String)"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build private <приватность> - установить приватность для мира (Boolean)"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build game <игра> - установить для чего строится постройка (Games)"));
-        p.sendMessage(Utils.fixColor("&a> &7/bm build progress <стадия> - установить прогресс для мира (Progress)"));
     }
 
     public static void sendInfo(Player p, BMWorld world) {

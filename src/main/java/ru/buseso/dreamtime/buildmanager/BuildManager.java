@@ -5,10 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.buseso.dreamtime.buildmanager.Events.BMCommand;
 import ru.buseso.dreamtime.buildmanager.Events.BMListener;
-import ru.buseso.dreamtime.buildmanager.utils.BMWorld;
-import ru.buseso.dreamtime.buildmanager.utils.Games;
-import ru.buseso.dreamtime.buildmanager.utils.Progress;
-import ru.buseso.dreamtime.buildmanager.utils.Utils;
+import ru.buseso.dreamtime.buildmanager.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +16,13 @@ public final class BuildManager extends JavaPlugin {
     public static String prefix = "&eBuild&cManager&8>> &7";
 
     public static List<BMWorld> worlds = new ArrayList<>();
+    public static BuildManager ins;
+
+    private BMRun run;
 
     @Override
     public void onEnable() {
+        ins = this;
         long start = System.currentTimeMillis();
         Utils.log(prefix+"&aНачинаю запуск плагина...");
 
@@ -36,9 +37,18 @@ public final class BuildManager extends JavaPlugin {
         Bukkit.getPluginCommand("buildmanager").setExecutor(new BMCommand());
 
         Utils.log(prefix+"&aЗапускаю таймер авто-сохранения конфига...");
+        run = new BMRun();
+        run.runTaskTimerAsynchronously(this, 20, 6000);
 
         Utils.log(prefix+"&aПлагин &eBuild&cManager &bv"+this.getDescription().getVersion()+" " +
                 "&aуспешно загружен за &b"+ (System.currentTimeMillis()-start) +"&aмс");
+    }
+
+    @Override
+    public void onDisable() {
+        run.cancel();
+        run.runTaskAsynchronously(this);
+        run.cancel();
     }
 
     private void addAllFromConfig() {

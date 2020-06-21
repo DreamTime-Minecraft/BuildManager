@@ -1,6 +1,7 @@
 name: BuildManager
-version: ${project.version}
+version: 1.0-SNAPSHOT
 main: ru.buseso.dreamtime.buildmanager.BuildManager
+api-version: 1.13
 authors: [BuseSo]
 description: Build or die!!
 website: https://vk.com/buse_page
@@ -8,4 +9,3 @@ website: https://vk.com/buse_page
 commands:
   buildmanager:
     description: BUILD OR BE BUILDED BY CUPRUM AND FERRUM!!!!!!!
-    aliases: [bm]

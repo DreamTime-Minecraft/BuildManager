@@ -1,0 +1,12 @@
+worlds:
+  'flat':
+    owner: 'BuseSo'
+    builders:
+      - 'BuseSo'
+      - 'SonechkaNuashka'
+      - 'SteveGrKek'
+    progress: 'INPROGRESS'
+    name: 'Главный мир всея Руси'
+    description: 'Мир как мир, че такого'
+    game: 'NO'
+    private: false
