@@ -38,7 +38,7 @@ public final class BuildManager extends JavaPlugin {
 
         Utils.log(prefix+"&aЗапускаю таймер авто-сохранения конфига...");
         run = new BMRun();
-        run.runTaskTimerAsynchronously(this, 20, 6000);
+        run.runTaskTimer(this, 20, 6000);
 
         Utils.log(prefix+"&aПлагин &eBuild&cManager &bv"+this.getDescription().getVersion()+" " +
                 "&aуспешно загружен за &b"+ (System.currentTimeMillis()-start) +"&aмс");
@@ -47,8 +47,7 @@ public final class BuildManager extends JavaPlugin {
     @Override
     public void onDisable() {
         run.cancel();
-        run.runTaskAsynchronously(this);
-        run.cancel();
+        saveConfig();
     }
 
     private void addAllFromConfig() {

@@ -8,16 +8,15 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.buseso.dreamtime.buildmanager.BuildManager;
-import ru.buseso.dreamtime.buildmanager.utils.holders.BMMainHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BMInv {
     public static Inventory createMainMenu() {
-        Inventory inv = Bukkit.createInventory(new BMMainHolder(), 54, Utils.fixColor("&eB&cM&8>> &6Главное меню"));
+        Inventory inv = Bukkit.createInventory(null, 54, Utils.fixColor("&eB&cM&8>> &6Главное меню"));
         for(int i = 0; i < 53 && i < BuildManager.worlds.size(); i++) {
-            ItemStack item = new ItemStack(Material.WOOD, i);
+            ItemStack item = new ItemStack(Material.WOOD, i+1);
             ItemMeta meta = item.getItemMeta();
             BMWorld bmw = BuildManager.worlds.get(i);
             meta.setDisplayName(Utils.fixColor("&8["+bmw.getId()+"&8] &a"+bmw.getName()));

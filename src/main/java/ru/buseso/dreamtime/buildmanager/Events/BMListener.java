@@ -93,6 +93,8 @@ public class BMListener implements Listener {
         Player p = (Player)e.getWhoClicked();
         int slot = e.getSlot();
 
+        if(!e.getClickedInventory().getName().equals(Utils.fixColor("&eB&cM&8>> &6Главное меню"))) return;
+
         if(e.getView().getItem(slot) != null) {
             if(slot > BuildManager.worlds.size()) return;
             BMWorld bmw = BuildManager.worlds.get(slot);

@@ -1,6 +1,7 @@
 package ru.buseso.dreamtime.buildmanager.Events;
 
 import com.google.common.base.Strings;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -82,7 +83,7 @@ public class BMCommand implements CommandExecutor {
                     boolean priv = Boolean.parseBoolean(privat);
                     bmw.setPrivat(priv);
                     p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aТеперь мир " +
-                            "" + (priv ? "&2открыт" : "&cзакрыт") + "&a для общего посещения"));
+                            "" + (priv ? "&cзакрыт" : "&2открыт") + "&a для общего посещения"));
                 } else if(args[1].equalsIgnoreCase("game")) {
                     String game = args[2].toUpperCase();
                     Games games = null;
