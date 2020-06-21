@@ -89,7 +89,7 @@ public class BMCommand implements CommandExecutor {
                     try {
                         games = Games.valueOf(game);
                     }catch (IllegalArgumentException e) {
-                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные цели постройки: "+Games.values().toString()));
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные цели постройки: "+Arrays.toString(Games.values())));
                         return false;
                     }
 
@@ -101,7 +101,7 @@ public class BMCommand implements CommandExecutor {
                     try {
                         prog = Progress.valueOf(progress);
                     }catch (IllegalArgumentException e) {
-                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные прогрессы постройки: "+Progress.values().toString()));
+                        p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Доступные прогрессы постройки: "+Arrays.toString(Progress.values())));
                         return false;
                     }
 

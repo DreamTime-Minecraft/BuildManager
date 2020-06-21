@@ -94,6 +94,7 @@ public class BMListener implements Listener {
         int slot = e.getSlot();
 
         if(e.getView().getItem(slot) != null) {
+            if(slot > BuildManager.worlds.size()) return;
             BMWorld bmw = BuildManager.worlds.get(slot);
             BMCommand.sendInfo(p, bmw);
             World world = Bukkit.getWorld(bmw.getId());
