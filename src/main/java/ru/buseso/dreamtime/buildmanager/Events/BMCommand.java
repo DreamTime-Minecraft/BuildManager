@@ -111,6 +111,29 @@ public class BMCommand implements CommandExecutor {
                 } else {
                     help = true;
                 }
+            } else if(args[0].equalsIgnoreCase("create")) {
+                String id = args[1];
+                String name = args[2];
+
+                boolean exists = false;
+                for(BMWorld bmw : BuildManager.worlds) {
+                    if(bmw.getId().equalsIgnoreCase(id)) {
+                        exists = true;
+                        continue;
+                    }
+                }
+
+                if(exists) {
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Такой мир уже существует!"));
+                } else {
+                    String cmd = "mvc "+id+" -g CleanroomGenerator:.";
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aЕсли Вы всё правильно указали, то мир создастся в течение 20-ти секунд! Позже Вы сможете зайти в него через &e/bm gui&a!"));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    BMWorld world = new BMWorld(id,p.getName(),Arrays.asList(p.getName()),
+                            Progress.NOTSTARTED,name,"Без описания",Games.NO,true);
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aНе забудьте указать описание мира и цель! Изменяйте прогресс, чтобы Администрация видела, что мир не пустует!"));
+                    BuildManager.worlds.add(world);
+                }
             } else {
                 help = true;
             }
@@ -153,6 +176,29 @@ public class BMCommand implements CommandExecutor {
                 } else {
                     help = true;
                 }
+            } else if(args[0].equalsIgnoreCase("create")) {
+                String id = args[1];
+                String name = args[2];
+                String arg = args[3];
+                
+                boolean exists = false;
+                for(BMWorld bmw : BuildManager.worlds) {
+                    if(bmw.getId().equalsIgnoreCase(id)) {
+                        exists = true;
+                        continue;
+                    }
+                }
+                
+                if(exists) {
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix+"&4Такой мир уже существует!"));
+                } else {
+                    String cmd = "mvc "+id+" -g CleanroomGenerator:"+arg;
+                    p.sendMessage(Utils.fixColor(BuildManager.prefix+"&aЕсли Вы всё правильно указали, то мир создастся в течение 20-ти секунд! Позже Вы сможете зайти в него через &e/bm gui&a!"));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    BMWorld world = new BMWorld(id,p.getName(),Arrays.asList(p.getName()),
+                            Progress.NOTSTARTED,name,"Без описания",Games.NO,true);
+                    BuildManager.worlds.add(world);
+                }
             } else {
                 help = true;
             }
@@ -176,6 +222,7 @@ public class BMCommand implements CommandExecutor {
         p.sendMessage(Utils.fixColor("&a> &7/bm build desc <описание> - установить описание для мира. _ ставит пробел (String)"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build private <приватность> - установить приватность для мира (Boolean)"));
         p.sendMessage(Utils.fixColor("&a> &7/bm build game <игра> - установить для чего строится постройка (Games)"));
+        p.sendMessage(Utils.fixColor("&a> &7/bm create <id> <название> [args] - создать новый мир. Если не указаны аргументы, то мир пустой"));
     }
 
     public static void sendInfo(Player p, BMWorld world) {
